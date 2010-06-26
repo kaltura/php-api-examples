@@ -3,7 +3,7 @@
 /**
 * Example of dependent multirequest (where multiple requests are batch executed and
 * the output of one request depends on the output of a previous request in the same batch.
-* This sample code will show how to merge the above 3 requests into a single unified 
+* This sample code will show how to merge 3 requests into a single unified 
 * request (a multirequest).
 **/
 
@@ -14,7 +14,7 @@ define("USER_SECRET",  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 require_once "KalturaClient.php";
 
-// Upload a single video
+// Upload a video and then fetch an image URL to use as its thumbnail
 
 $user = "SomeoneWeKnow";  // If this user does not exist in your KMC, then it will be created.
 $kconf = new KalturaConfiguration(PARTNER_ID);
@@ -65,6 +65,6 @@ echo '<pre>';
 print_r($result);
 echo '</pre>';
 
-// Note: resets to non-multirequest automatically after completion
+// Note: resets to non-multirequest mode automatically after completion
 
 ?>
