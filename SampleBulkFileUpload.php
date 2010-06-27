@@ -1,12 +1,7 @@
 <?php
 
 // Bulk upload using CSV file
-// CSV file contains five fields:
-// video title, description, tags, url (http or ftp pull with no auth), type (Video, Audio, or Image)
-
-// BUG: It says in the docs that the conversion profile can be in the CSV file for bulk uploads:
-// http://www.kaltura.com/api_v3/testmeDoc/index.php?service=bulkupload
-// WHAT ARE *ALL* THE POSSIBLE CSV FIELDS?
+// See the BulkUpload.csv file in this directory for CSV file format details
 
 // Your Kaltura partner credentials
 define("PARTNER_ID", "nnnnnn");
