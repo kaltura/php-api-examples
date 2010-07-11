@@ -1,0 +1,95 @@
+<?php
+
+// Utility program used to transfer all assets from one 
+// Kaltura account to another
+
+// Your old Kaltura CE credentials
+define("PARTNER_ID", "xxxxxx");
+define("ADMIN_SECRET", "nnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+define("USER_SECRET", "nnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+
+// Your new Kaltura CE credentials
+define("NEW_PARTNER_ID", "xxxxxx");
+define("NEW_ADMIN_SECRET", "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+define("NEW_USER_SECRET", "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+
+define("BULKFILENAME", "transfer.csv");
+
+require_once "KalturaClient.php";
+
+// Get session for old stuff  ********************
+$user = "SomeoneWeKnow";  // If this user does not exist in your KMC, then it will be created.
+$OLDkconf = new KalturaConfiguration(PARTNER_ID);
+$OLDkclient = new KalturaClient($OLDkconf);
+$OLDksession = $OLDkclient->session->start(ADMIN_SECRET, $user, KalturaSessionType::ADMIN);
+
+if (!isset($OLDksession)) {
+	die("Could not establish Kaltura session with OLD session credentials. Please verify that you are using valid Kaltura partner credentials.");
+}
+
+$OLDkclient->setKs($OLDksession);
+
+// Set the response format
+// KALTURA_SERVICE_FORMAT_JSON  json
+// KALTURA_SERVICE_FORMAT_XML   xml
+// KALTURA_SERVICE_FORMAT_PHP   php
+$OLDkconf->format = KalturaClientBase::KALTURA_SERVICE_FORMAT_PHP;
+// ***********************************************
+
+// Get session for new stuff  ********************
+$user = "SomeoneWeKnow";  // If this user does not exist in your KMC, then it will be created.
+$NEWkconf = new KalturaConfiguration(NEW_PARTNER_ID);
+$NEWkclient = new KalturaClient($NEWkconf);
+$NEWksession = $NEWkclient->session->start(NEW_ADMIN_SECRET, $user, KalturaSessionType::ADMIN);
+
+if (!isset($NEWksession)) {
+	die("Could not establish Kaltura session with NEW session credentials. Please verify that you are using valid Kaltura partner credentials.");
+}
+
+$NEWkclient->setKs($NEWksession);
+
+// Set the response format
+// KALTURA_SERVICE_FORMAT_JSON  json
+// KALTURA_SERVICE_FORMAT_XML   xml
+// KALTURA_SERVICE_FORMAT_PHP   php
+$NEWkconf->format = KalturaClientBase::KALTURA_SERVICE_FORMAT_PHP;
+// ***********************************************
+
+// Get list of files
+// $kfilter = new KalturaMediaEntryFilter();
+// $kfilter->mediaTypeEqual = KalturaMediaType::VIDEO;
+// $kfilter->mediaTypeEqual = KalturaMediaType::IMAGE;
+// $kfilter->mediaTypeEqual = KalturaMediaType::AUDIO;
+// Use $kfilter as the argument if you only want to transfer a certain file type. 
+// Using null returns all files in the CE
+
+echo "Fetching your old media.....</br>";
+$result = $OLDkclient->media->listAction(null);
+
+// CSV fields: Name, Description, Tag, URL, Media Type, Transcoding Profile ID,	 
+// Access Control Profile ID, Category, Scheduling Start Date, Scheduling End Date,	 
+// Thumbnail URL, Partner Data
+
+// Use dataUrl or downloadUrl ?
+$bigstr = "";
+foreach ($result->objects as $entry) {
+	$bigstr .= '"'.$entry->name.'","'.$entry->description.'","'.$entry->tags.'","'.$entry->dataUrl.'","'.$entry->mediaType.'","","","'.$entry->categories.'","","","'.$entry->thumbnailUrl.'"'."\n";
+}
+
+echo "Writing your list of old media to the CSV file: ".BULKFILENAME."......</br>";
+file_put_contents(BULKFILENAME,$bigstr);
+
+// Is there a "no profile conversion" default?
+$conversionProfileID = -1;  //use default
+
+$CSVfile = realpath("./".BULKFILENAME);
+
+echo "Initiating bulk upload......</br>";
+$result = $NEWkclient->bulkUpload->add($conversionProfileID, $CSVfile);
+
+echo '<h3>PHP Structure returned by bulk file upload</h3>';
+echo '<pre>';
+print_r($result);
+echo '</pre>';
+
+?>
