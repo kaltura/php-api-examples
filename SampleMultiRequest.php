@@ -18,6 +18,10 @@ require_once "KalturaClient.php";
 
 $user = "SomeoneWeKnow";  // If this user does not exist in your KMC, then it will be created.
 $kconf = new KalturaConfiguration(PARTNER_ID);
+// If you want to use the API against your self-hosted CE,
+// go to your KMC and look at Settings -> Integration Settings to find your partner credentials
+// and add them above. Then insert the domain name of your CE below.
+// $kconf->serviceUrl = "http://www.mySelfHostedCEsite.com/";
 $kclient = new KalturaClient($kconf);
 $ksession = $kclient->session->start(USER_SECRET, $user, KalturaSessionType::USER);
 

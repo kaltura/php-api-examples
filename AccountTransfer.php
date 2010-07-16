@@ -20,6 +20,10 @@ require_once "KalturaClient.php";
 // Get session for old stuff  ********************
 $user = "SomeoneWeKnow";  // If this user does not exist in your KMC, then it will be created.
 $OLDkconf = new KalturaConfiguration(PARTNER_ID);
+// If you want to use the API against your self-hosted CE,
+// go to your KMC and look at Settings -> Integration Settings to find your partner credentials
+// and add them above. Then insert the domain name of your CE below.
+// $OLDkconf->serviceUrl = "http://www.mySelfHostedCEsite.com/";
 $OLDkclient = new KalturaClient($OLDkconf);
 $OLDksession = $OLDkclient->session->start(ADMIN_SECRET, $user, KalturaSessionType::ADMIN);
 
@@ -39,6 +43,10 @@ $OLDkconf->format = KalturaClientBase::KALTURA_SERVICE_FORMAT_PHP;
 // Get session for new stuff  ********************
 $user = "SomeoneWeKnow";  // If this user does not exist in your KMC, then it will be created.
 $NEWkconf = new KalturaConfiguration(NEW_PARTNER_ID);
+// If you want to use the API against your self-hosted CE,
+// go to your KMC and look at Settings -> Integration Settings to find your partner credentials
+// and add them above. Then insert the domain name of your CE below.
+// $NEWkconf->serviceUrl = "http://www.mySelfHostedCEsite.com/";
 $NEWkclient = new KalturaClient($NEWkconf);
 $NEWksession = $NEWkclient->session->start(NEW_ADMIN_SECRET, $user, KalturaSessionType::ADMIN);
 
