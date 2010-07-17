@@ -77,11 +77,13 @@ $result = $OLDkclient->media->listAction(null);
 // CSV fields: Name, Description, Tag, URL, Media Type, Transcoding Profile ID,	 
 // Access Control Profile ID, Category, Scheduling Start Date, Scheduling End Date,	 
 // Thumbnail URL, Partner Data
+// The CSV file for bulk uploads must have either 5 fields (V1) or 12 fields (V2).
+// I use 12 fields below (empty fields have the empty string "")
 
 // Use dataUrl or downloadUrl ?
 $bigstr = "";
 foreach ($result->objects as $entry) {
-	$bigstr .= '"'.$entry->name.'","'.$entry->description.'","'.$entry->tags.'","'.$entry->dataUrl.'","'.$entry->mediaType.'","","","'.$entry->categories.'","","","'.$entry->thumbnailUrl.'"'."\n";
+	$bigstr .= '"'.$entry->name.'","'.$entry->description.'","'.$entry->tags.'","'.$entry->dataUrl.'","'.$entry->mediaType.'","","","'.$entry->categories.'","","","'.$entry->thumbnailUrl.'",""'."\n";
 }
 
 echo "Writing your list of old media to the CSV file: ".BULKFILENAME."......</br>";
