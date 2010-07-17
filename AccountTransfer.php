@@ -115,4 +115,22 @@ echo '<pre>';
 print_r($result);
 echo '</pre>';
 
+echo "Fetching your old user list.....</br>";
+$result = $OLDkclient->user->listAction(null, null);
+echo "Transferring your old users to your new site....</br>";
+foreach ($result->objects as $entry) {
+   try {
+       $result = $NEWkclient->user->add($entry);
+    } catch (Exception $e) {
+         if (strpos($e,'already exists')) {
+            echo "Skipping ".$e->getMessage()."</br>";
+            continue;
+         } else {
+            // We should not be getting any errors besides 'already exists'
+            die ($e->getMessage());
+         }
+    }  
+    echo "User ID ".$entry->id." transferred. </br>";
+}
+
 ?>
