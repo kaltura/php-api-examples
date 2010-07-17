@@ -2,6 +2,10 @@
 
 // Bulk upload using CSV file
 // See the BulkUpload.csv file in this directory for CSV file format details
+// Note that each entry in the CSV file for bulk uploads must have either 5 fields (V1) 
+// or 12 fields (V2).
+// For this test, only the first 5 fields are used. If you want to use 12 fields be
+// sure and indicate the empty fields with two double quotes ""
 
 // Your Kaltura partner credentials
 define("PARTNER_ID", "nnnnnn");
