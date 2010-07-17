@@ -17,6 +17,18 @@ define("BULKFILENAME", "transfer.csv");
 
 require_once "KalturaClient.php";
 
+// Return media type as string
+function getMediaType($type) {
+   if ($type == 5) {
+       $media = 'Audio';
+     } elseif ($type == 2) {
+       $media = 'Image';
+     } else {
+       $media = "Video";
+     }
+return $media;
+}
+
 // Get session for old stuff  ********************
 $user = "SomeoneWeKnow";  // If this user does not exist in your KMC, then it will be created.
 $OLDkconf = new KalturaConfiguration(PARTNER_ID);
@@ -69,7 +81,7 @@ $NEWkconf->format = KalturaClientBase::KALTURA_SERVICE_FORMAT_PHP;
 // $kfilter->mediaTypeEqual = KalturaMediaType::IMAGE;
 // $kfilter->mediaTypeEqual = KalturaMediaType::AUDIO;
 // Use $kfilter as the argument if you only want to transfer a certain file type. 
-// Using null returns all files in the CE
+// Using null as the argument for listAction returns all file types in the CE
 
 echo "Fetching your old media.....</br>";
 $result = $OLDkclient->media->listAction(null);
@@ -83,7 +95,8 @@ $result = $OLDkclient->media->listAction(null);
 // Use dataUrl or downloadUrl ?
 $bigstr = "";
 foreach ($result->objects as $entry) {
-	$bigstr .= '"'.$entry->name.'","'.$entry->description.'","'.$entry->tags.'","'.$entry->dataUrl.'","'.$entry->mediaType.'","","","'.$entry->categories.'","","","'.$entry->thumbnailUrl.'",""'."\n";
+    $media = getMediaType($entry->mediaType);
+	$bigstr .= '"'.$entry->name.'","'.$entry->description.'","'.$entry->tags.'","'.$entry->dataUrl.'","'.$media.'","","","'.$entry->categories.'","","","'.$entry->thumbnailUrl.'",""'."\n";
 }
 
 echo "Writing your list of old media to the CSV file: ".BULKFILENAME."......</br>";
