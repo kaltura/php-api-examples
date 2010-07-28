@@ -1,7 +1,7 @@
 <?php
 
 // Create an Access Control profile
-// BUG: This script bombs -- what's wrong?
+// BUG: Does not list site restrictions in results
 
 // Your Kaltura partner credentials
 define("PARTNER_ID", "nnnnnn");
@@ -32,20 +32,24 @@ $kclient->setKs($ksession);
 $kconf->format = KalturaClientBase::KALTURA_SERVICE_FORMAT_PHP;
 
 $acl = new KalturaAccessControl;
+
 $acl->name = "VariousRestrictions";
 $acl->description = "Restrict North Korea and Madagascar and some weird sites from access";
+$acl->partnerId = PARTNER_ID;
+$acl->createdAt = time();
+$countryRestriction = new KalturaCountryRestriction();
+$countryRestriction->countryRestrictionType = KalturaCountryRestrictionType::RESTRICT_COUNTRY_LIST;
+$countryRestriction->countryList = 'KP,MG';
 
-$countryRestrictions = new KalturaCountryRestriction;
-$countryRestrictions->countryRestrictionType = KalturaCountryRestrictionType::RESTRICT_COUNTRY_LIST;
-$countryRestrictions->countryList = "KP,MG"; 
-
-$siteRestrictions = new KalturaSiteRestriction;
-$siteRestrictions->siteRestrictionType = KalturaSiteRestrictionType::RESTRICT_SITE_LIST;
+$siteRestriction = new KalturaSiteRestriction();
+$siteRestriction->siteRestrictionType = KalturaSiteRestrictionType::RESTRICT_SITE_LIST;
 $siteRestrictions->siteList = "www.someweirdhackersitezzxxx.com,www.xhdgfjslehdlsjd.com";
 
-// Array of restriction objects
-$acl->restrictions[0] = $countryRestrictions;
-$acl->restrictions[1] = $siteRestrictions;
+$restrictionArray = array();
+$restrictionArray[] =$countryRestriction;
+$restrictionArray[] =$siteRestriction;
+
+$acl->restrictions = $restrictionArray;
 
 $result = $kclient->accessControl->add($acl);
 
