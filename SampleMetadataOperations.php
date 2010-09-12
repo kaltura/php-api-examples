@@ -5,7 +5,7 @@
 // And then sets a value for that field for the first video retrieved.
 // And then changes the value of the field.
 //
-//
+// It's possible to create multiple profiles. This script just uses the default profile.
 
 require_once 'KalturaClient.php';
 
