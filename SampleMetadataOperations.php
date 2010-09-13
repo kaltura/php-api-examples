@@ -6,6 +6,10 @@
 // And then changes the value of the field.
 //
 // It's possible to create multiple profiles. This script just uses the default profile.
+// This script does not demonstrate how to create custom views (ways of displaying
+// the forms to gather data).
+// This script does not demonstrate the metadata searching techniques.
+
 
 require_once 'KalturaClient.php';
 
