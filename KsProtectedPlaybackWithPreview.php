@@ -12,6 +12,8 @@
 define("PARTNER_ID", "--Set your partner id here--");
 define("USER_SECRET", "--Set your user secret here--");
 define("ENTRY_ID", "--Set the entry id of a video with relevant KS access control applied that belong to the above partner id--");
+define("UICONF_ID", "--Set the uiconf id of the player you'd like to use. You can find this id in the players list on the Studio tab in KMC--");
+$user = "SomeoneWeKnow";  // Whatever user id you want to set (This is according to your system deployment)
 
 require_once "client/KalturaClient.php";
 
@@ -28,7 +30,6 @@ if ($user_name == 'demo' && $password == 'pass')
 }
 
 //Create a session
-$user = "SomeoneWeKnow";  // Whatever user id you want to set (This is according to your system deployment)
 $conf = new KalturaConfiguration(PARTNER_ID);
 $client = new KalturaClient($conf);
 //This is the session start function signature: start($secret, $userId = "", $type = 0, $partnerId = -1, $expiry = 86400, $privileges = "")
@@ -58,13 +59,13 @@ if ($approved == false)
 		</form>';
 ?>
 
-<object id="kaltura_player" name="kaltura_player" type="application/x-shockwave-flash" allowFullScreen="true" allowNetworking="all" allowScriptAccess="always" height="333" width="400" xmlns:dc="http://purl.org/dc/terms/" xmlns:media="http://search.yahoo.com/searchmonkey/media/" rel="media:video" resource="http://www.kaltura.com/index.php/kwidget/cache_st/1287944832/wid/_309/uiconf_id/1913582/entry_id/<?php echo ENTRY_ID; ?>" data="http://www.kaltura.com/index.php/kwidget/cache_st/1287944832/wid/_309/uiconf_id/1913582/entry_id/<?php echo ENTRY_ID; ?>">
+<object id="kaltura_player" name="kaltura_player" type="application/x-shockwave-flash" allowFullScreen="true" allowNetworking="all" allowScriptAccess="always" height="333" width="400" xmlns:dc="http://purl.org/dc/terms/" xmlns:media="http://search.yahoo.com/searchmonkey/media/" rel="media:video" resource="http://www.kaltura.com/index.php/kwidget/wid/_<?php echo PARTNER_ID; ?>/uiconf_id/<?php echo UICONF_ID; ?>/entry_id/<?php echo ENTRY_ID; ?>" data="http://www.kaltura.com/index.php/kwidget/wid/_<?php echo PARTNER_ID; ?>/uiconf_id/<?php echo UICONF_ID; ?>/entry_id/<?php echo ENTRY_ID; ?>">
 	<param name="allowFullScreen" value="true" />
 	<param name="allowNetworking" value="all" />
 	<param name="allowScriptAccess" value="always" />
 	<param name="bgcolor" value="#000000" />
 	<param name="flashVars" value="<?php echo $flashvars; ?>" />
-	<param name="movie" value="http://www.kaltura.com/index.php/kwidget/cache_st/1287944832/wid/_309/uiconf_id/1913582/entry_id/<?php echo ENTRY_ID; ?>" />
+	<param name="movie" value="http://www.kaltura.com/index.php/kwidget/wid/_<?php echo PARTNER_ID; ?>/uiconf_id/<?php echo UICONF_ID; ?>/entry_id/<?php echo ENTRY_ID; ?>" />
 </object>
 
 </body>
