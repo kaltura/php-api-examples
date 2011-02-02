@@ -1,0 +1,30 @@
+1
+00:00:12,000 --> 00:00:15,000
+This is an example
+of another subtitles file
+
+2
+00:00:16,167 --> 00:00:19,083
+that can replace the current
+subtitles file during playback.
+
+3
+00:00:20,083 --> 00:00:23,000
+This is an example
+of another subtitles file
+
+4
+00:00:23,000 --> 00:00:26,417
+that can replace the current
+subtitles file during playback.
+
+5
+00:00:27,583 --> 00:00:30,083
+This is an example
+of another subtitles file
+
+6
+00:00:30,208 --> 00:00:33,042
+that can replace the current
+subtitles file during playback.
+
