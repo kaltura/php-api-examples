@@ -4,6 +4,7 @@
 // requiring the user secret. This is suitable for mobile apps or desktop apps
 // where you want to let any Kaltura user authenticate and use web services.
 //
+// This version assumes that the user ALREADY EXISTS in the KMC
 // First step: You need to go to your KMC account and create a new user.
 // Go to the "Administration" tab and click on "Add User". If you don't have
 // an "Administration" tab in your KMC, then you need to contact support.
