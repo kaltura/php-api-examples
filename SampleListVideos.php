@@ -1,5 +1,7 @@
 <?php
 
+// List the first 30 videos in your KMC
+//
 // BUGS: Used $entry->dataUrl (original uploaded video) because $entry->downloadUrl doesn't work 
 // for the default samples in the SaaS accounts.....!
 // Where are the downloadUrls for the default samples in the account?
@@ -10,8 +12,6 @@ define("ADMIN_SECRET", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 define("USER_SECRET",  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 require_once "KalturaClient.php";
-
-// List all videos in your KMC
 
 $user = "SomeoneWeKnow"; 
 $kconf = new KalturaConfiguration(PARTNER_ID);
@@ -36,6 +36,7 @@ $kconf->format = KalturaClientBase::KALTURA_SERVICE_FORMAT_PHP;
 
 $kfilter = new KalturaMediaEntryFilter();
 $kfilter->mediaTypeEqual = KalturaMediaType::VIDEO;
+$kfilter->status = KalturaEntryStatus::READY;
 
 $result = $kclient->media->listAction($kfilter);
 
