@@ -27,8 +27,8 @@ $user->email = EMAIL;
 $user->password = PASSWORD;
 $user->country = "USA";
 $user->city = "Dime Box";
-// Role IDs are unique to each account. You will need to either find the proper role
-// ID in your KMC or do a $kclient->userRole->listAction() call to find it
+// Role IDs are unique to each account. The role IDs are not listed in the KMC.
+// You have to do a web service call to find them: $kclient->userRole->listAction()
 // $user->roleIds = "";
 
 $kconf = new KalturaConfiguration(PARTNER_ID);
