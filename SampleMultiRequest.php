@@ -23,7 +23,7 @@ $kconf = new KalturaConfiguration(PARTNER_ID);
 // and add them above. Then insert the domain name of your CE below.
 // $kconf->serviceUrl = "http://www.mySelfHostedCEsite.com/";
 $kclient = new KalturaClient($kconf);
-$ksession = $kclient->session->start(USER_SECRET, $user, KalturaSessionType::USER);
+$ksession = $kclient->session->start(USER_SECRET, $user, KalturaSessionType::USER, PARTNER_ID);
 
 if (!isset($ksession)) {
 	die("Could not establish Kaltura session. Please verify that you are using valid Kaltura partner credentials.");

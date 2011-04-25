@@ -37,7 +37,7 @@ $OLDkconf = new KalturaConfiguration(PARTNER_ID);
 // and add them above. Then insert the domain name of your CE below.
 // $OLDkconf->serviceUrl = "http://www.mySelfHostedCEsite.com/";
 $OLDkclient = new KalturaClient($OLDkconf);
-$OLDksession = $OLDkclient->session->start(ADMIN_SECRET, $user, KalturaSessionType::ADMIN);
+$OLDksession = $OLDkclient->session->start(ADMIN_SECRET, $user, KalturaSessionType::ADMIN, PARTNER_ID);
 
 if (!isset($OLDksession)) {
 	die("Could not establish Kaltura session with OLD session credentials. Please verify that you are using valid Kaltura partner credentials.");
@@ -60,7 +60,7 @@ $NEWkconf = new KalturaConfiguration(NEW_PARTNER_ID);
 // and add them above. Then insert the domain name of your CE below.
 // $NEWkconf->serviceUrl = "http://www.mySelfHostedCEsite.com/";
 $NEWkclient = new KalturaClient($NEWkconf);
-$NEWksession = $NEWkclient->session->start(NEW_ADMIN_SECRET, $user, KalturaSessionType::ADMIN);
+$NEWksession = $NEWkclient->session->start(NEW_ADMIN_SECRET, $user, KalturaSessionType::ADMIN, PARTNER_ID);
 
 if (!isset($NEWksession)) {
 	die("Could not establish Kaltura session with NEW session credentials. Please verify that you are using valid Kaltura partner credentials.");
