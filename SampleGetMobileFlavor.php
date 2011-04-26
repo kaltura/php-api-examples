@@ -1,5 +1,5 @@
 <?php
-require_once('mobiled.php');
+require_once 'mobiled.php';
 require_once "KalturaClient.php";
 
 // Shows how to get a mobile flavor.
