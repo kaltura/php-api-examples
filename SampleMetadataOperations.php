@@ -14,9 +14,9 @@
 require_once 'KalturaClient.php';
 
 // Your Kaltura partner credentials
-define("PARTNER_ID", "nnnnnn");
-define("ADMIN_SECRET", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-define("USER_SECRET",  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+define("PARTNER_ID", "KMC>Settings>Integration Settings>Partner ID");
+define("ADMIN_SECRET", "KMC>Settings>Integration Settings>Administrator Secret");
+define("USER_SECRET",  "KMC>Settings>Integration Settings>User Secret");
 
 require_once "KalturaClient.php";
 
@@ -41,13 +41,15 @@ $kconf->format = KalturaClientBase::KALTURA_SERVICE_FORMAT_PHP;
 
 $kclient->setKs($ksession);
 
+echo "<h3>Using session: <span style=\"font-size:8px;\">$ksession</span></h3>";
+
 // The metadata field we'll add/update
 $metaDataFieldName = 'SubtitleFormat';
 $fieldValue = 'VobSub';
 
 // The Schema file for the field
 // Currently, you must build the xsd yourself. There is no utility provided.
-$xsdFile = './MetadataSchema.xsd';
+$xsdFile = 'MetadataSchema.xsd';
 
 // Setup a pager and search to use
 $pager = new KalturaFilterPager;
@@ -92,14 +94,17 @@ if (isset($metadata->xsd)) {
 $filter = new KalturaMetadataFilter();
 $filter->objectIdEqual = $entries[0]->id;
 $xmlData = '<metadata><SubtitleFormat>'.$fieldValue.'</SubtitleFormat></metadata>';
-$metadata = $kclient->metadata->add($profileId, $profile, $entries[0]->id, $xmlData);
-
-if (isset($metadata->xml)) {
-	echo "<h3>3. Successfully added the custom data field for video: $name, entryid: $id </h3>";
-	$xml = htmlspecialchars($metadata->xml, ENT_QUOTES);
-	echo "<h3> XML used: $xml </h3>";
-} else {
-	echo "<h3>3. Failed to add the custom data field. </h3>";
+try {
+	$metadata = $kclient->metadata->add($profileId, $profile->metadataObjectType, $entries[0]->id, $xmlData);
+	if (isset($metadata->xml)) {
+		echo "<h3>3. Successfully added the custom data field for video: $name, entryid: $id </h3>";
+		$xml = htmlspecialchars($metadata->xml, ENT_QUOTES);
+		echo "<h3> XML used: $xml </h3>";
+	} else {
+		echo "<h3>3. Failed to add the custom data field. </h3>";
+	}
+} catch (Exception $e) {
+	echo "<h3>3. metadata already exist for this entry. move on to just modify the value.</h3>";	
 }
 
 // Now lets change the value (update) of the custom field
@@ -114,18 +119,12 @@ if (isset($metadata[0]->xml)) {
 	$xmlquoted = htmlspecialchars($metadata[0]->xml, ENT_QUOTES);
 	echo "<h3> XML: $xmlquoted </h3>";
 	$xml = $metadata[0]->xml;
-	// Make sure we find the old value in the current metadata
-	$pos = strpos($xml, '<'.$metaDataFieldName.'>'.$fieldValue.'</'.$metaDataFieldName.'>');
-	if ($pos === false) {
-		echo "<h3>4. Failed to find metadata STRING for video: $name, entryid: $id </h3>";
-	} else {
-		$pattern = "@<".$metaDataFieldName.">(.+)</".$metaDataFieldName.">@";
-		$xml = preg_replace($pattern, '<'.$metaDataFieldName.'>Ogg Writ</'.$metaDataFieldName.'>', $xml);
-		$rc = $kclient->metadata->update($metadata[0]->id, $xml);
-		echo "<h3>5. Updated metadata for video: $name, entryid: $id </h3>";
-		$xmlquoted = htmlspecialchars($rc->xml, ENT_QUOTES);
-		echo "<h3> XML: $xmlquoted </h3>";
-	}
+	$pattern = "@<".$metaDataFieldName.">(.+)</".$metaDataFieldName.">@";
+	$xml = preg_replace($pattern, '<'.$metaDataFieldName.'>Ogg Writ</'.$metaDataFieldName.'>', $xml);
+	$rc = $kclient->metadata->update($metadata[0]->id, $xml);
+	echo "<h3>5. Updated metadata for video: $name, entryid: $id </h3>";
+	$xmlquoted = htmlspecialchars($rc->xml, ENT_QUOTES);
+	echo "<h3> XML: $xmlquoted </h3>";
 } else {
 	echo "<h3>4. Failed to find metadata for video: $name, entryid: $id </h3>";
 }
